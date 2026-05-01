@@ -3,51 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Catálogo de Artículos</title>
+    <title>Catálogo de Productos - Coreano</title>
     <style>
         :root {
-            --primary: #2563eb;
+            --primary: #e11d48; /* Un rojo más vibrante */
             --bg: #f8fafc;
-            --text: #1e293b;
+            --white: #ffffff;
         }
 
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
             margin: 0;
             padding: 20px;
         }
 
-        header {
+        .container {
             max-width: 1000px;
-            margin: 0 auto 40px;
-            text-align: center;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
-        /* Barra de búsqueda y Filtros */
+        h1 { text-align: center; color: #0f172a; }
+
+        /* Buscador y Filtros */
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            gap: 20px;
             margin-bottom: 30px;
         }
 
         #searchInput {
-            width: 100%;
-            max-width: 500px;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border: 2px solid #e2e8f0;
-            border-radius: 25px;
+            border-radius: 30px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: 0.3s;
         }
 
-        #searchInput:focus {
-            border-color: var(--primary);
-        }
+        #searchInput:focus { border-color: var(--primary); }
 
         .categories {
             display: flex;
@@ -56,147 +55,172 @@
             justify-content: center;
         }
 
-        .category-btn {
-            padding: 8px 16px;
-            border: none;
-            background: #e2e8f0;
+        .cat-btn {
+            padding: 8px 18px;
+            border: 1px solid #e2e8f0;
+            background: white;
             border-radius: 20px;
             cursor: pointer;
             transition: 0.3s;
+            font-weight: 500;
         }
 
-        .category-btn.active {
+        .cat-btn.active {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
-        /* Grid de Artículos */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Tabla Estilizada */
+        .table-container { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card-category {
-            font-size: 0.75rem;
+        th {
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
             text-transform: uppercase;
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 8px;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
         }
 
-        .card-title {
-            font-size: 1.25rem;
-            margin: 0 0 10px 0;
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
         }
 
-        .hidden {
-            display: none;
+        .img-producto {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #eee;
         }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .precio { font-weight: bold; color: var(--primary); }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Explora nuestro contenido</h1>
+<div class="container">
+    <h1>Catálogo de Productos</h1>
+
     <div class="controls">
-        <input type="text" id="searchInput" placeholder="Buscar por nombre o descripción...">
-        <div class="categories">
-            <button class="category-btn active" onclick="filterCategory('all')">Todos</button>
-            <button class="category-btn" onclick="filterCategory('tecnologia')">Tecnología</button>
-            <button class="category-btn" onclick="filterCategory('diseño')">Diseño</button>
-            <button class="category-btn" onclick="filterCategory('negocios')">Negocios</button>
+        <input type="text" id="searchInput" placeholder="Buscar por nombre...">
+        <div class="categories" id="categoryFilters">
+            <!-- Los botones se generan solos aquí -->
         </div>
     </div>
-</header>
 
-<main class="grid" id="articleGrid">
-    <!-- Artículo 1 -->
-    <article class="card" data-category="tecnologia">
-        <div class="card-content">
-            <span class="card-category">Tecnología</span>
-            <h3 class="card-title">Introducción a GitHub</h3>
-            <p>Aprende a publicar tus proyectos usando GitHub Pages de forma sencilla.</p>
-        </div>
-    </article>
-
-    <!-- Artículo 2 -->
-    <article class="card" data-category="diseño">
-        <div class="card-content">
-            <span class="card-category">Diseño</span>
-            <h3 class="card-title">Paletas de Colores</h3>
-            <p>Cómo elegir la combinación perfecta para tu sitio web moderno.</p>
-        </div>
-    </article>
-
-    <!-- Artículo 3 -->
-    <article class="card" data-category="negocios">
-        <div class="card-content">
-            <span class="card-category">Negocios</span>
-            <h3 class="card-title">SEO para Principiantes</h3>
-            <p>Optimiza tu presencia en buscadores sin gastar un centavo.</p>
-        </div>
-    </article>
-
-    <!-- Artículo 4 -->
-    <article class="card" data-category="tecnologia">
-        <div class="card-content">
-            <span class="card-category">Tecnología</span>
-            <h3 class="card-title">JavaScript Moderno</h3>
-            <p>Domina ES6 y las nuevas funciones del lenguaje más usado en la web.</p>
-        </div>
-    </article>
-</main>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody id="productTable">
+                <!-- El inventario se carga aquí -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
+    // Tu data original
+    const inventario = [
+        { id: 1, nombre: "Buldak Rosé", precio: 2200, cat: "Ramen", img: "imagenes/rosé.png", cant: 0 },
+        { id: 2, nombre: "Chappaggeti en pote", precio: 2500, cat: "Ramen Pote", img: "imagenes/chappa_pote.jpg", cant: 0 },
+        { id: 3, nombre: "Jin Veggie", precio: 2200, cat: "Ramen", img: "imagenes/veggie.jpg", cant: 0 },
+        { id: 4, nombre: "Topokki Agridulce y picante", precio: 2000, cat: "Topokkis", img: "imagenes/topokki_picante.png", cant: 0 },
+        { id: 5, nombre: "Topokki Carbonara", precio: 2000, cat: "Topokkis", img: "imagenes/topokki_carbonara.png", cant: 0 },
+        { id: 6, nombre: "Buldak Queso en pote", precio: 2500, cat: "Ramen Pote", img: "imagenes/potequeso.jpg", cant: 0 },
+        { id: 7, nombre: "Chappaggeti", precio: 2000, cat: "Ramen", img: "imagenes/chappa.jpg", cant: 0 },
+        { id: 8, nombre: "Buldak Carbonara", precio: 2500, cat: "Ramen", img: "imagenes/carbonara.png", cant: 0 },
+        { id: 9, nombre: "Café Caramel Macciato", precio: 1500, cat: "Bebidas", img: "imagenes/caramel.png", cant: 0 },
+        { id: 10, nombre: "Café Hazzelnut", precio: 1500, cat: "Bebidas", img: "imagenes/café.png", cant: 0 },
+        { id: 11, nombre: "Buldak 4 quesos", precio: 2500, cat: "Ramen", img: "imagenes/4quesos.png", cant: 0 }
+    ];
+
+    const productTable = document.getElementById('productTable');
+    const categoryFilters = document.getElementById('categoryFilters');
     const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.card');
-    const buttons = document.querySelectorAll('.category-btn');
 
-    // Función de Búsqueda
-    searchInput.addEventListener('input', () => {
+    let currentCategory = "Todos";
+
+    // 1. Iniciar la página
+    function init() {
+        renderProducts();
+        renderCategories();
+    }
+
+    // 2. Renderizar filas de la tabla
+    function renderProducts() {
         const query = searchInput.value.toLowerCase();
-        
-        cards.forEach(card => {
-            const text = card.innerText.toLowerCase();
-            card.classList.toggle('hidden', !text.includes(query));
-        });
-    });
+        productTable.innerHTML = "";
 
-    // Función de Filtro por Categoría
-    function filterCategory(category) {
-        // Actualizar botones
-        buttons.forEach(btn => {
-            btn.classList.toggle('active', btn.innerText.toLowerCase() === category || (category === 'all' && btn.innerText === 'Todos'));
-        });
+        inventario.forEach(prod => {
+            const matchesSearch = prod.nombre.toLowerCase().includes(query);
+            const matchesCat = currentCategory === "Todos" || prod.cat === currentCategory;
 
-        // Filtrar tarjetas
-        cards.forEach(card => {
-            if (category === 'all') {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.toggle('hidden', card.dataset.category !== category);
+            if (matchesSearch && matchesCat) {
+                const row = `
+                    <tr>
+                        <td>${prod.id}</td>
+                        <td><img src="${prod.img}" class="img-producto" alt="${prod.nombre}"></td>
+                        <td><strong>${prod.nombre}</strong></td>
+                        <td><span class="badge">${prod.cat}</span></td>
+                        <td class="precio">$${prod.precio}</td>
+                    </tr>
+                `;
+                productTable.innerHTML += row;
             }
         });
     }
+
+    // 3. Crear botones de categorías dinámicamente
+    function renderCategories() {
+        const cats = ["Todos", ...new Set(inventario.map(p => p.cat))];
+        categoryFilters.innerHTML = "";
+        
+        cats.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = `cat-btn ${c === currentCategory ? 'active' : ''}`;
+            btn.innerText = c;
+            btn.onclick = () => {
+                currentCategory = c;
+                renderCategories(); // Repinta botones para mover la clase 'active'
+                renderProducts();
+            };
+            categoryFilters.appendChild(btn);
+        });
+    }
+
+    // 4. Escuchar el buscador
+    searchInput.addEventListener('input', renderProducts);
+
+    init();
 </script>
 
 </body>
